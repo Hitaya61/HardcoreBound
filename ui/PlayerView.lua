@@ -1,28 +1,17 @@
 local UI = HardcoreBound.UI
 
-function HardcoreBound:CreatePlayerView()
-    if self.playerFrame then return end
+function HardcoreBound:CreatePlayerView(parent)
+    local content = UI:CreateScrollContent(parent)
 
-    local frame = UI:CreateMainFrame(
-        "HardcoreBound_PlayerView",
-        "HardcoreBound – Player View",
-        520,
-        420
-    )
-
-    local content = UI:CreateScrollContent(frame)
-
-    -- Eksempel spillerkort
     local section = UI:CreateSection(content, 50)
     section:SetPoint("TOPLEFT", 0, 0)
 
     UI:CreateStatusIcon(section, "VERIFIED")
 
-    local name = section:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    name:SetPoint("LEFT", 30, 0)
-    name:SetText("Funderskov – Level 10")
+    local text = section:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    text:SetPoint("LEFT", 30, 0)
+    text:SetText("Funderskov – Level 10 – Elwynn Forest")
 
     content:SetHeight(60)
-
-    self.playerFrame = frame
+    return content
 end

@@ -1,7 +1,12 @@
 HardcoreBound = HardcoreBound or {}
-HardcoreBound.UI = {}
+HardcoreBound.UI = HardcoreBound.UI or {}
 
-function HardcoreBound.UI:CreateMainFrame(name, title, width, height)
+local UI = HardcoreBound.UI
+
+-- =========================
+-- Main Frame
+-- =========================
+function UI:CreateMainFrame(name, title, width, height)
     local frame = CreateFrame(
         "Frame",
         name,
@@ -9,7 +14,7 @@ function HardcoreBound.UI:CreateMainFrame(name, title, width, height)
         "BasicFrameTemplateWithInset"
     )
 
-    frame:SetSize(width or 500, height or 400)
+    frame:SetSize(width or 560, height or 460)
     frame:SetPoint("CENTER")
     frame:SetMovable(true)
     frame:EnableMouse(true)
@@ -18,7 +23,6 @@ function HardcoreBound.UI:CreateMainFrame(name, title, width, height)
     frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
     frame:Hide()
 
-    -- Title
     frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
     frame.title:SetPoint("TOP", 0, -8)
     frame.title:SetText(title or "HardcoreBound")
@@ -26,28 +30,31 @@ function HardcoreBound.UI:CreateMainFrame(name, title, width, height)
     return frame
 end
 
-function HardcoreBound.UI:CreateScrollContent(parent)
-    local scrollFrame = CreateFrame(
+-- =========================
+-- Scroll Content
+-- =========================
+function UI:CreateScrollContent(parent)
+    local scroll = CreateFrame(
         "ScrollFrame",
         nil,
         parent,
         "UIPanelScrollFrameTemplate"
     )
-    scrollFrame:SetPoint("TOPLEFT", 12, -30)
-    scrollFrame:SetPoint("BOTTOMRIGHT", -30, 12)
 
-    local content = CreateFrame("Frame", nil, scrollFrame)
+    scroll:SetPoint("TOPLEFT", 10, -30)
+    scroll:SetPoint("BOTTOMRIGHT", -30, 10)
+
+    local content = CreateFrame("Frame", nil, scroll)
     content:SetSize(1, 1)
-
-    scrollFrame:SetScrollChild(content)
-
-    parent.scrollFrame = scrollFrame
-    parent.content = content
+    scroll:SetScrollChild(content)
 
     return content
 end
 
-function HardcoreBound.UI:CreateSection(parent, height)
+-- =========================
+-- Section (Inset box)
+-- =========================
+function UI:CreateSection(parent, height)
     local section = CreateFrame(
         "Frame",
         nil,
@@ -55,14 +62,17 @@ function HardcoreBound.UI:CreateSection(parent, height)
         "InsetFrameTemplate"
     )
 
-    section:SetHeight(height or 60)
+    section:SetHeight(height or 50)
     section:SetPoint("LEFT", 0, 0)
     section:SetPoint("RIGHT", 0, 0)
 
     return section
 end
 
-function HardcoreBound.UI:CreateStatusIcon(parent, status)
+-- =========================
+-- Status Icon
+-- =========================
+function UI:CreateStatusIcon(parent, status)
     local icon = parent:CreateTexture(nil, "ARTWORK")
     icon:SetSize(16, 16)
     icon:SetPoint("LEFT", 8, 0)
@@ -76,4 +86,45 @@ function HardcoreBound.UI:CreateStatusIcon(parent, status)
     end
 
     return icon
+end
+
+-- =========================
+-- Tabs
+-- =========================
+function UI:CreateTabs(parent, tabs)
+    parent.tabs = {}
+    parent.tabFrames = {}
+
+    for i, tab in ipairs(tabs) do
+        local button = CreateFrame(
+            "Button",
+            parent:GetName().."Tab"..i,
+            parent,
+            "CharacterFrameTabButtonTemplate"
+        )
+
+        button:SetID(i)
+        button:SetText(tab.text)
+        button:SetPoint("TOPLEFT", parent, "BOTTOMLEFT", (i - 1) * 70, 7)
+
+        PanelTemplates_TabResize(button, 0)
+
+        button:SetScript("OnClick", function()
+            UI:SelectTab(parent, i)
+        end)
+
+        parent.tabs[i] = button
+        parent.tabFrames[i] = tab.frame
+    end
+
+    PanelTemplates_SetNumTabs(parent, #tabs)
+    UI:SelectTab(parent, 1)
+end
+
+function UI:SelectTab(parent, id)
+    for i, frame in ipairs(parent.tabFrames) do
+        frame:SetShown(i == id)
+    end
+
+    PanelTemplates_SetTab(parent, id)
 end
