@@ -1,0 +1,14 @@
+## Interface: 20504
+## Title: HardcoreBound
+## Notes: Hardcore death tracking addon
+## Author: Funderskov
+## Version: 1.3.0
+
+core.lua
+utils.lua
+Media.lua
+DeathWindow.lua
+death.lua
+resguard.lua
+session.lua
+ui.lua
