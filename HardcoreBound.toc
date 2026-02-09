@@ -1,14 +1,22 @@
 ## Interface: 20504
 ## Title: HardcoreBound
-## Notes: Hardcore death tracking addon
+## Notes: HardcoreBound UI OVerhaul
 ## Author: Funderskov
-## Version: 1.3.0
+## Version: 1.4.0
 
-core.lua
+## SavedVariablesPerCharacter: HardcoreBoundDB
+
+
+
+
+
 utils.lua
 Media.lua
-DeathWindow.lua
-death.lua
-resguard.lua
 session.lua
+resguard.lua
+
+core.lua
+
+DeathWindow.lua
+
 ui.lua
