@@ -229,4 +229,29 @@ function HardcoreBound.DeathWindow.Show(level)
     C_Timer.After(0.25, function()
         FadeIn(deathFrame, 0.35)
     end)
+
+end
+
+if deathFrame then
+    deathFrame:SetScript("OnHide", function(self)
+        if HardcoreBoundDB and HardcoreBoundDB.isDead then
+            C_Timer.After(0.1, function()
+                if deathFrame then
+                    deathFrame:Show()
+                end
+            end)
+        end
+    end)
+end
+
+if overlay then
+    overlay:SetScript("OnHide", function(self)
+        if HardcoreBoundDB and HardcoreBoundDB.isDead then
+            C_Timer.After(0.1, function()
+                if overlay then
+                    overlay:Show()
+                end
+            end)
+        end
+    end)
 end
